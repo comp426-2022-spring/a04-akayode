@@ -87,8 +87,8 @@ if (argv.debug == true) {
 }
 
 app.get('/app', (req, res) => {
-    res.status(200).end('OK')
-    res.type('text/plain')
+    res.statusCode = 200
+    res.statusMessage = 'OK'
     res.writeHead(res.statusCode, {'Content-Type': 'text/plain'})
     res.end(res.statusCode + ' ' + res.statusMessage)
 });
@@ -105,7 +105,7 @@ function coinFlip() {
 
 app.get('/app/flip', (req, res) => {
     var flip = coinFlip()
-    res.status(200).json({ 'flip' : flip })
+    res.json({ 'flip' : flip })
 });
 
 function coinFlips(flips) {
@@ -138,7 +138,7 @@ function countFlips(array) {
 app.get('/app/flips/:number', (req, res) => {
     var flips = coinFlips(req.params.number)
     var summary = countFlips(flips)
-    res.status(200).json({"raw":flips,"summary":summary})
+    res.json({"raw":flips,"summary":summary})
 });
 
 function flipACoin(call) {
@@ -152,12 +152,11 @@ function flipACoin(call) {
 
 app.get('/app/flip/call/:guess', (req, res) => {
     const result = flipACoin(req.params.guess)
-    res.status(200).json({ result })
+    res.json({ result })
 });
 
 app.use(function(req, res){
     res.status(404).send('404 NOT FOUND')
-    res.type("text/plain")
 });
 
 
