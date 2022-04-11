@@ -73,11 +73,10 @@ app.use((req, res, next) => {
 
 
 if (argv.debug == true) {
-  app.get('/app/log/access', (req, res) => {
+  app.get('/app/log/access/', (req, res) => {
     try {
       const stmt = logdb.prepare('SELECT * FROM accesslog').all();
-      res.statusCode = 200
-      res.json(stmt);
+      res.status(200).send(stmt)
     } catch  {
       console.error(e)
     }
