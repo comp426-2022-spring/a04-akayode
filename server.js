@@ -82,7 +82,7 @@ if (argv.debug == true) {
     }
   });
   app.get('/app/error', (req, res) => {
-    throw new Error("Error test successful")
+    throw new Error("Error test successful.")
   })
 }
 
