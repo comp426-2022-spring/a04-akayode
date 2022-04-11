@@ -45,6 +45,13 @@ const server = app.listen(port, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', port))
 });
 
+if (argv.log == true) {
+  const accesslog = fs.createWriteStream('./access.log', {flags: 'a'});
+  app.use(morgan("tiny", {stream: accesslog}));
+} else {
+  app.use(morgan("tiny"))
+}
+
 app.use((req, res, next) => {
   let logdata = {
     remoteaddr: req.ip,
@@ -77,13 +84,6 @@ if (argv.debug == true) {
   app.get('/app/error', (req, res) => {
     throw new Error("Error test successful")
   })
-}
-
-if (argv.log == true) {
-  const accesslog = fs.createWriteStream('./access.log', {flags: 'a'});
-  app.use(morgan("tiny", {stream: accesslog}));
-} else {
-  app.use(morgan("tiny"))
 }
 
 app.get('/app', (req, res) => {
