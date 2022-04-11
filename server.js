@@ -10,7 +10,8 @@ args['port']
 
 const call = args.call
 
-argv.log = true;
+args.log = false;
+args.debug = true;
 
 console.log(args)
 // Store help text 
@@ -36,7 +37,7 @@ if (args.help || args.h) {
     process.exit(0)
 }
 
-app.use(express.urlencoded({extend: true}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 const port = args.port || process.env.PORT || 5555
@@ -45,9 +46,9 @@ const server = app.listen(port, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', port))
 });
 
-if (argv.log == true) {
-  const accesslog = fs.createWriteStream('./access.log', {flags: 'a'});
-  app.use(morgan("tiny", {stream: accesslog}));
+if (args.log == true) {
+  const writestream = fs.createWriteStream('./access.log', {flags: 'a'});
+  app.use(morgan("tiny", {stream: writestream}));
 } else {
   app.use(morgan("tiny"))
 }
@@ -66,20 +67,16 @@ app.use((req, res, next) => {
     referer: req.headers['referer'],
     useragent: req.headers['user-agent']
   }
-  const stmt = logdb.prepare('INSERT INTO accesslog (remote_addr, remote_user, time, method, url, protocol, http_version, secure, status, referer, user_agent) VALUES (?,?,?,?,?,?,?,?,?,?, ?)')
+  const stmt = logdb.prepare('INSERT INTO accesslog (remote_addr, remote_user, time, method, url, protocol, http_version, secure, status, referer, user_agent) VALUES (?,?,?,?,?,?,?,?,?,?,?)')
   stmt.run(logdata.remoteaddr, String(logdata.remoteuser), logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, String(logdata.secure), logdata.status, logdata.referer, logdata.useragent);
   next();
 });
 
 
-if (argv.debug == true) {
-  app.get('/app/log/access/', (req, res) => {
-    try {
-      const stmt = logdb.prepare('SELECT * FROM accesslog').all();
-      res.status(200).send(stmt)
-    } catch  {
-      console.error(e)
-    }
+if (args.debug == true) {
+  app.get('/app/log/access', (req, res) => {
+    const stmt = logdb.prepare('SELECT * FROM accesslog').all();
+    res.status(200).json(stmt)
   });
   app.get('/app/error', (req, res) => {
     throw new Error("Error test successful.")
