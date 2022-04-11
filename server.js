@@ -12,21 +12,28 @@ const call = args.call
 
 argv.log = false;
 
-if (argv.help) {
-  console.log("server.js [options]")
-  console.log("  --por		Set the port number for the server to listen on. Must be an integer")
-  console.log("              	between 1 and 65535.")
-  console.log()
-  console.log("  --debug	If set to `true`, creates endlpoints /app/log/access/ which returns")
-  console.log("              	a JSON access log from the database and /app/error which throws ")
-  console.log('              	an error with the message "Error test successful." Defaults to ')
-  console.log("	             	`false`.")
-  console.log()
-  console.log("  --log		If set to false, no log files are written. Defaults to true.")
-  console.log("		                  Logs are always written to database.")
-  console.log()
-  console.log(" --help	  Return this message and exit.")
-  process.exit()
+console.log(args)
+// Store help text 
+const help = (`
+server.js [options]
+
+--port	Set the port number for the server to listen on. Must be an integer
+            between 1 and 65535.
+
+--debug	If set to true, creates endlpoints /app/log/access/ which returns
+            a JSON access log from the database and /app/error which throws 
+            an error with the message "Error test successful." Defaults to 
+            false.
+
+--log		If set to false, no log files are written. Defaults to true.
+            Logs are always written to database.
+
+--help	Return this message and exit.
+`)
+// If --help or -h, echo help text to STDOUT and exit
+if (args.help || args.h) {
+    console.log(help)
+    process.exit(0)
 }
 
 app.use((req, res, next) => {
@@ -45,7 +52,7 @@ app.use((req, res, next) => {
   const stmt = logdb.prepare('INSERT INTO accesslog (remote_addr, remote_user, time, method, url, protocol, http_version, status, referer, user_agent) VALUES (?,?,?,?,?,?,?,?,?,')
   stmt.run(logdata.remoteaddr, String(logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent));
   next();
-})
+});
 
 if (argv.debug == true) {
   app.get('/app/log/access', (req, res) => {
@@ -55,9 +62,9 @@ if (argv.debug == true) {
     } catch  {
       console.error(e)
     }
-  })
+  });
   app.get('/app/error', (req, res) => {
-    throw new Error("Error test successful.")
+    throw new Error("Error test successful")
   })
 }
 
