@@ -10,7 +10,7 @@ args['port']
 
 const call = args.call
 
-argv.log = false;
+argv.log = true;
 
 console.log(args)
 // Store help text 
