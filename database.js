@@ -20,11 +20,11 @@ if (row === undefined) {
             method VARCHAR,
             url VARCHAR,
             protocol VARCHAR,
-            httpversion NUMERIC,
+            http_version NUMERIC,
             secure VARCHAR,
             status TEXT, 
             referer VARCHAR,
-            useragent VARCHAR
+            user_agent VARCHAR
         );
     `
 
