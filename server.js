@@ -58,7 +58,7 @@ app.use((req, res, next) => {
     referer: req.headers['referer'],
     useragent: req.headers['user-agent']
   }
-  const stmt = logdb.prepare('INSERT INTO accesslog (remote_addr, remote_user, time, method, url, protocol, http_version, status, referer, user_agent) VALUES (?,?,?,?,?,?,?,?,?,?)')
+  const stmt = logdb.prepare('INSERT INTO accesslog (remote_addr, remote_user, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?,?,?,?,?,?,?,?,?,?)')
   stmt.run(logdata.remoteaddr, String(logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent));
   next();
 });
