@@ -12,6 +12,22 @@ const call = args.call
 
 argv.log = false;
 
+if (argv.help) {
+  console.log("server.js [options]")
+  console.log("  --por		Set the port number for the server to listen on. Must be an integer")
+  console.log("              	between 1 and 65535.")
+  console.log("  --debug	If set to `true`, creates endlpoints /app/log/access/ which returns")
+  console.log("              	a JSON access log from the database and /app/error which throws ")
+  console.log('              	an error with the message "Error test successful." Defaults to ')
+  console.log("	             	`false`.")
+  console.log()
+  console.log("  --log		If set to false, no log files are written. Defaults to true.")
+  console.log("		                  Logs are always written to database.")
+  console.log()
+  console.log(" --help	  Return this message and exit.")
+  process.exit()
+}
+
 const port = args.port || process.env.PORT || 5000
 
 app.use(express.urlencoded({extend: true}));
@@ -132,17 +148,4 @@ if (argv.debug == true) {
   })
 }
 
-if (argv.help || args.h) {
-  console.log("server.js [options]")
-  console.log("  --por		Set the port number for the server to listen on. Must be an integer")
-  console.log("              	between 1 and 65535.")
-  console.log("  --debug	If set to true, creates endlpoints /app/log/access/ which returns")
-  console.log("              	a JSON access log from the database and /app/error which throws ")
-  console.log('              	an error with the message "Error test successful." Defaults to ')
-  console.log("		false.")
-  console.log()
-  console.log("  --log		If set to false, no log files are written. Defaults to true.")
-  console.log("		Logs are always written to database.")
-  console.log()
-  console.log(" --help	Return this message and exit.")
-}
+
