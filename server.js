@@ -89,6 +89,8 @@ if (argv.debug == true) {
 app.get('/app', (req, res) => {
     res.status(200).end('OK')
     res.type('text/plain')
+    res.writeHead(res.statusCode, {'Content-Type': 'text/plain'})
+    res.end(res.statusCode + ' ' + res.statusMessage)
 });
 
 function coinFlip() {
