@@ -36,6 +36,15 @@ if (args.help || args.h) {
     process.exit(0)
 }
 
+app.use(express.urlencoded({extend: true}));
+app.use(express.json());
+
+const port = args.port || process.env.PORT || 5000
+
+const server = app.listen(port, () => {
+    console.log('App listening on port %PORT%'.replace('%PORT%', port))
+});
+
 app.use((req, res, next) => {
   let logdata = {
     remoteaddr: req.ip,
@@ -67,16 +76,6 @@ if (argv.debug == true) {
     throw new Error("Error test successful")
   })
 }
-
-
-const port = args.port || process.env.PORT || 5000
-
-app.use(express.urlencoded({extend: true}));
-app.use(express.json());
-
-const server = app.listen(port, () => {
-    console.log('App listening on port %PORT%'.replace('%PORT%', port))
-});
 
 if (argv.log == true) {
   const accesslog = fs.createWriteStream('./access.log', {flags: 'a'});
