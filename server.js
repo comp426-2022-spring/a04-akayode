@@ -39,7 +39,7 @@ if (args.help || args.h) {
 app.use(express.urlencoded({extend: true}));
 app.use(express.json());
 
-const port = args.port || process.env.PORT || 5000
+const port = args.port || process.env.PORT || 5555
 
 const server = app.listen(port, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', port))
