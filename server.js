@@ -140,6 +140,7 @@ if (argv.help || args.h) {
   console.log("              	a JSON access log from the database and /app/error which throws ")
   console.log('              	an error with the message "Error test successful." Defaults to ')
   console.log("		false.")
+  console.log()
   console.log("  --log		If set to false, no log files are written. Defaults to true.")
   console.log("		Logs are always written to database.")
   console.log()
