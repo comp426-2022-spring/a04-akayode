@@ -118,13 +118,16 @@ app.use((req, res, next) => {
   next();
 })
 
-app.get('/app/log/access', (req, res) => {
-  const result = flipACoin(req.params.guess)
-  res.status(200).json({ result })
-});
-
-app.get('/app/error', (req, res) => {
-  const result = flipACoin(req.params.guess)
-  res.status(200).json({ result })
-});
-
+if (argv.debug == true) {
+  app.get('/app/log/access', (req, res) => {
+    try {
+      const stmt = logdb.prepare('SELECT * FROM accesslog').all();
+      res.status(200).json(stmt);
+    } catch  {
+      console.error(e)
+    }
+  })
+  app.get('/app/error', (req, res) => {
+    throw new Error("Error test successful.")
+  })
+}
