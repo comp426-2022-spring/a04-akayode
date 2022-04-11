@@ -21,7 +21,8 @@ if (row === undefined) {
             url VARCHAR,
             protocol VARCHAR,
             httpversion NUMERIC,
-            status integer, 
+            secure VARCHAR,
+            status TEXT, 
             referer VARCHAR,
             useragent VARCHAR
         );
